@@ -37,6 +37,15 @@ export class UserService {
         });
         return await this.userRepository.insert(newUser).then(() => newUser);
     }
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        const user = await this.userRepository.findOne({
+            where: {
+                email: email,
+            },
+        });
+        return user;
+    }
     
     async deleteUser(email: string): Promise<void> {
         const user = await this.userRepository.findOneOrFail({
