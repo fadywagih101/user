@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../../service/UserService';
 import Joi from 'joi';
 import { validateBody } from '../../decorator/validateRequestBody';
+import { ValidationError } from '../../middlewares/validatonerror';
 
 const createUserBody = Joi.object({
     name: Joi.string().required(),
@@ -9,6 +10,7 @@ const createUserBody = Joi.object({
     password: Joi.string().required(),
     mobile: Joi.string().pattern(/^[0-9]{10,15}$/).required(),
     country: Joi.string().required(),
+    age: Joi.number().required()
 })
 const updateUserBody = Joi.object({
     name: Joi.string().optional,
@@ -33,6 +35,7 @@ export class UserController {
             });
         } catch (error: any) {
             res.status(400).json({ message: error.message });
+            throw new ValidationError(error.message);
         }
     }
 
@@ -53,7 +56,7 @@ export class UserController {
         try {
             const User = await this.userService.getUserByEmail(req.body.email);
             res.status(200).json({
-                message: "User updated successfully",
+                message: "User Retrieved successfully",
                 data: User,
             });
         } catch (error: any) {
