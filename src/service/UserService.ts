@@ -16,12 +16,6 @@ interface UpdateUserDetails {
     email: string;
 };
 
-interface UserFilters {
-    id?: number;
-    name?: string;
-    email?: string;
-    registered_date?: Date;
-}
 export class UserService {
     private readonly userRepository: Repository<User>;
 
